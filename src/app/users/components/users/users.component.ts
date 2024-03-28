@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from '../../services/users.service';
 import { Users } from '../../models/users';
 import { PageEvent } from '@angular/material/paginator';
-import { map } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -10,16 +10,17 @@ import { map } from 'rxjs';
 })
 export class UsersComponent {
   users: Users | null = null;
-  loadedUsers!: any;
   searchValue!: number | null;
   loading: boolean = false;
   currentPage: number = 1;
 
-  public constructor(private userService: UserService) {}
+  public constructor(
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.getUsers(this.currentPage);
-    this.getAllUsersFromAllPages();
   }
 
   private getUsers(_currentPage: number): void {
@@ -41,35 +42,25 @@ export class UsersComponent {
     this.getUsers(this.currentPage);
   }
 
-  public onSearchChange(): void {
-    console.log(this.loadedUsers);
-    
-    // if (this.searchValue) {
-    //   this.users = this.loadedUsers.filter(
-    //     (user: { id: number | null }) => user.id === this.searchValue
-    //   );
-    // } else {
-    //   this.users = this.loadedUsers;
-    // }
+  checkUser(id: number): void {
+    const user = this.users?.data.find(
+      (user: { id: number }) => user.id === id
+    );
+    if (user) {
+      const intervalId = setInterval(() => {
+        this.router.navigate(['/user-details', this.searchValue]);
+        clearInterval(intervalId);
+      }, 1000);
+    } else {
+      console.log(`User with id ${id} not found`);
+    }
   }
 
-  getAllUsersFromAllPages() {
+  public onSearchChange(): void {
     if (this.searchValue === null) {
-      this.userService.getAllUsers().subscribe({
-        next: (res) => {
-          this.loadedUsers = res;
-        },
-        error: (err) => {
-          console.error(err);
-        },
-      });
-      return this.loadedUsers;
+      this.getUsers(this.currentPage);
     } else {
-      return this.userService.getAllUsers().pipe(
-        map((res) => {
-          return console.log(res.find((user) => user.id === this.searchValue));
-        })
-      );
+      this.checkUser(this.searchValue);
     }
   }
 }
