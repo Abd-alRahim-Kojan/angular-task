@@ -1,10 +1,13 @@
-<div class="rounded overflow-hidden shadow-lg p-6 bg-white">
-  <div *ngIf="!loading">
-    <img [src]="userData.data.avatar" alt="User Avatar" />
-    <h2>{{ userData.data.first_name }} {{ userData.data.last_name }}</h2>
-    <p>Email: {{ userData.data.email }}</p>
-  </div>
-</div>
-<div *ngIf="loading" class="">
-  <app-spinner></app-spinner>
-</div>
+<app-page>
+  <ng-container content>
+    <div class="rounded overflow-hidden shadow-lg p-6 bg-white">
+      <div *ngIf="!loading">
+        <img [src]="userData.data.avatar" alt="User Avatar" />
+        <h2>{{ userData.data.first_name }} {{ userData.data.last_name }}</h2>
+        <p>Email: {{ userData.data.email }}</p>
+      </div>
+    </div>
+    <div *ngIf="loading" class="">
+      <app-spinner></app-spinner>
+    </div> </ng-container
+></app-page>

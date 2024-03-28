@@ -5,8 +5,9 @@ import { RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PageComponent } from './page/page.component';
 
-const sharedComponents = [HeaderComponent, SpinnerComponent];
+const sharedComponents = [HeaderComponent, SpinnerComponent, PageComponent];
 
 @NgModule({
   declarations: [...sharedComponents],
