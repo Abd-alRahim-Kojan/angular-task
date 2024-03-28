@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { RouterModule } from '@angular/router';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [UsersComponent, UserDetailsComponent],
@@ -15,6 +16,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     RouterModule,
     SharedModule,
     MatPaginatorModule,
+    FormsModule,
   ],
 })
 export class UsersModule {}

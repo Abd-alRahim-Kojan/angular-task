@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { User } from '../models/users';
@@ -8,6 +8,9 @@ import { User } from '../models/users';
   providedIn: 'root',
 })
 export class UserService {
+  searchValue: number | null = null;
+  users: any = [];
+
   constructor(private http: HttpClient) {}
 
   getAllUsers(): Observable<User[]> {
@@ -32,10 +35,25 @@ export class UserService {
   }
 
   getAllUsersFromPage(page: number) {
-    return this.http.get(`${environment.baseApi}?page=${page}`);
+    return this.http.get(`${environment.baseApi}/users?page=${page}`);
   }
 
   getUserById(id: number) {
-    return this.http.get(`${environment.baseApi}/${id}`);
+    // return this.http.get(`${environment.baseApi}/users/${id}`);
+    // return this.http.get(`${environment.baseApi}/useres?id=${id}`);
+    const params = new HttpParams().set('id', id);
+    return this.http.get(`${environment.baseApi}/users/`, { params });
+  }
+
+  getAllUsersFromAllPages() {
+    if (this.searchValue === null) {
+      return this.getAllUsers();
+    } else {
+      return this.getAllUsers().pipe(
+        map((res) => {
+          return res.find((user) => user.id === this.searchValue);
+        })
+      );
+    }
   }
 }

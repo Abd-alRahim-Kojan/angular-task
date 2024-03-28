@@ -6,8 +6,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PageComponent } from './page/page.component';
+import { SearchPipe } from './pipes/search.pipe';
 
-const sharedComponents = [HeaderComponent, SpinnerComponent, PageComponent];
+const sharedComponents = [
+  HeaderComponent,
+  SpinnerComponent,
+  PageComponent,
+  SearchPipe,
+];
 
 @NgModule({
   declarations: [...sharedComponents],

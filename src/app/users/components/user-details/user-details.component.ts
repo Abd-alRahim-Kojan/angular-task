@@ -5,7 +5,6 @@ import { UserService } from '../../services/users.service';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrl: './user-details.component.scss',
 })
 export class UserDetailsComponent {
   id: number = 0;

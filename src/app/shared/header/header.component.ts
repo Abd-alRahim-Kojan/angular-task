@@ -9,7 +9,8 @@ import { FormBuilder } from '@angular/forms';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  searchValue: string = '';
+  loading: boolean = false;
+  searchValue!: number | null;
   id: number = 0;
   users: any = [];
   searchForm = this.fb.nonNullable.group({
@@ -26,6 +27,7 @@ export class HeaderComponent {
     this.userService.getAllUsers().subscribe({
       next: (res) => {
         this.users = res;
+        console.log(this.users); // get all users from the api
       },
       error: (err) => {
         console.error(err);
@@ -42,15 +44,15 @@ export class HeaderComponent {
     }
   }
 
-  onSearchSubmit(): void {
-    const id = this.searchForm.value.searchValue;
-    if (id) {
-      this.searchUser(+id);
-      console.log('Searching for user with id: ', id);
-    } else {
-      console.log('Please enter a valid id.');
-    }
-  }
+  // onSearchSubmit(): void {
+  //   const id = this.searchForm.value.searchValue;
+  //   if (id) {
+  //     this.searchUser(+id);
+  //     console.log('Searching for user with id: ', id);
+  //   } else {
+  //     console.log('Please enter a valid id.');
+  //   }
+  // }
 
   // private getUsers(_currentPage: number): void {
   //   this.userService.getAllUsers(this.currentPage).subscribe({
