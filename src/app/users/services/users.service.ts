@@ -10,9 +10,11 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getAllUsersFromPage(page: number) {
+  getAllUsersFromPage(page: number, perPage: number) {
     if (this.searchValue === null) {
-      return this.http.get(`${environment.baseApi}/users?page=${page}`);
+      return this.http.get(
+        `${environment.baseApi}/users?page=${page}&per_page=${perPage}`
+      );
     } else {
       return this.getUserById(this.searchValue);
     }

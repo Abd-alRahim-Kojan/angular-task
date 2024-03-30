@@ -2,58 +2,54 @@ import { Component } from '@angular/core';
 import { UserService } from '../../services/users.service';
 import { Users } from '../../models/users';
 import { PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
 })
 export class UsersComponent {
-  users: Users | null = null;
+  users: any = [];
+  per_page: number = 6;
   searchValue!: number | null;
   loading: boolean = false;
   currentPage: number = 1;
 
-  public constructor(
-    private userService: UserService,
-    private router: Router
-  ) {}
+  public constructor(private userService: UserService) {}
 
   ngOnInit() {
     this.getUsers(this.currentPage);
   }
 
-  private getUsers(_currentPage: number): void {
+  private getUsers(currentPage: number, per_page: number = 6): void {
     this.loading = true;
-    this.userService.getAllUsersFromPage(this.currentPage).subscribe({
-      next: (res) => {
+    this.userService.getAllUsersFromPage(this.currentPage, per_page).subscribe({
+      next: (res: any) => {
         this.loading = false;
-        this.users = res as Users;
+        this.users = res.data;
       },
       error: (err) => {
         this.loading = false;
-        console.error(err);
+        console.error('Error getting users', err);
       },
     });
   }
 
   public handlePageEvent(event: PageEvent): void {
     this.currentPage = event.pageIndex + 1;
-    this.getUsers(this.currentPage);
+    this.per_page = event.pageSize;
+    this.getUsers(this.currentPage, this.per_page);
   }
 
   checkUser(id: number): void {
-    const user = this.users?.data.find(
-      (user: { id: number }) => user.id === id
-    );
-    if (user) {
-      const intervalId = setInterval(() => {
-        this.router.navigate(['/user-details', this.searchValue]);
-        clearInterval(intervalId);
-      }, 1000);
-    } else {
-      console.log(`User with id ${id} not found`);
-    }
+    this.userService.getUserById(id).subscribe({
+      next: (res: any) => {
+        this.users = [res.data];
+      },
+      error: (err) => {
+        console.error(err);
+        this.users = []
+      },
+    });
   }
 
   public onSearchChange(): void {
