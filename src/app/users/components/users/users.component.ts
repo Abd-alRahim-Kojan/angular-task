@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../services/users.service';
-import { Users } from '../../models/users';
+import { User, Users } from '../../models/users';
 import { PageEvent } from '@angular/material/paginator';
 
 @Component({
@@ -8,7 +8,8 @@ import { PageEvent } from '@angular/material/paginator';
   templateUrl: './users.component.html',
 })
 export class UsersComponent {
-  users: any = [];
+  users!: Users;
+  usersData: User[] = [];
   per_page: number = 6;
   searchValue!: number | null;
   loading: boolean = false;
@@ -23,9 +24,10 @@ export class UsersComponent {
   private getUsers(currentPage: number, per_page: number = 6): void {
     this.loading = true;
     this.userService.getAllUsersFromPage(this.currentPage, per_page).subscribe({
-      next: (res: any) => {
+      next: (res: Object) => {
+        const usersResponse = res as Users;
         this.loading = false;
-        this.users = res.data;
+        this.usersData = usersResponse.data;
       },
       error: (err) => {
         this.loading = false;
@@ -43,11 +45,11 @@ export class UsersComponent {
   checkUser(id: number): void {
     this.userService.getUserById(id).subscribe({
       next: (res: any) => {
-        this.users = [res.data];
+        this.usersData = [res.data];
       },
       error: (err) => {
         console.error(err);
-        this.users = []
+        this.usersData = [];
       },
     });
   }

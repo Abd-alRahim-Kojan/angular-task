@@ -1,5 +1,4 @@
 export interface Users {
-  res: Users;
   page: number;
   per_page: number;
   total: number;

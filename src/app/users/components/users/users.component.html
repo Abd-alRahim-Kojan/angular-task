@@ -1,19 +1,21 @@
 <app-page>
   <ng-container content>
     <div class="container mx-auto">
-      <input
-        type="number"
-        [(ngModel)]="searchValue"
-        (ngModelChange)="onSearchChange()"
-        placeholder="Search about user by his Id..."
-        class="m-8 p-4 w-full border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500"
-      />
+      <div class="mx-8">
+        <input
+          type="number"
+          [(ngModel)]="searchValue"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Search about user by his Id..."
+          class="my-8 p-4 w-full border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500"
+        />
+      </div>
     </div>
-    <div class="container mx-auto">
+    <div class="container mx-auto my-4">
       <div *ngIf="!loading" class="flex justify-center">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div
-            *ngFor="let user of users"
+            *ngFor="let user of usersData"
             routerLink="/users/{{ user.id }}"
             class="max-w-sm rounded-xl overflow-hidden shadow-lg"
           >
@@ -28,7 +30,7 @@
         </div>
       </div>
       <div
-        *ngIf="users.length === 0"
+        *ngIf="usersData.length === 0"
         class="text-center text-3xl font-bold my-40"
       >
         <p>No users found :(</p>
